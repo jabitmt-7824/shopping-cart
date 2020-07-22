@@ -1,42 +1,34 @@
 import React from 'react'
 
 class CartItem extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            title: "Mobile Phone",
-            price: 999,
-            qnty: 1,
-            img: ""
-        }
-    }
-    increaseQunatity = () => {
-        // setStatate() form 1
-        // this.setState({
-        //     qnty: this.state.qnty+1
-        // });
-        
-        // setState() form 2
-        this.setState((prevState) =>{
-            return {
-                qnty: prevState.qnty + 1
-            }
-        })
-    }
 
-    decreaseQunatity = () => {
-        const currentQnty = this.state.qnty;
-        if(currentQnty === 1){
-            return;
-        }
-        this.setState((prevState) =>{
-            return {
-                qnty: prevState.qnty - 1
-            }
-        })
-    }
+    // increaseQunatity = () => {
+    //     // setStatate() form 1
+    //     // this.setState({
+    //     //     qnty: this.state.qnty+1
+    //     // });
+
+    //     // setState() form 2
+    //     this.setState((prevState) => {
+    //         return {
+    //             qnty: prevState.qnty + 1
+    //         }
+    //     })
+    // }
+
+    // decreaseQunatity = () => {
+    //     const currentQnty = this.state.qnty;
+    //     if (currentQnty === 1) {
+    //         return;
+    //     }
+    //     this.setState((prevState) => {
+    //         return {
+    //             qnty: prevState.qnty - 1
+    //         }
+    //     })
+    // }
     render() {
-        const { title, price, qnty } = this.state;
+        const { title, price, qnty } = this.props.product;
         return (
             <div className="cart-item">
                 <div className="left-block">
@@ -50,13 +42,19 @@ class CartItem extends React.Component {
                         <img
                             alt="incease-button"
                             className="action-icons"
-                            src="https://image.flaticon.com/icons/svg/992/992651.svg" 
-                            onClick = {this.increaseQunatity}/>
+                            src="https://image.flaticon.com/icons/svg/992/992651.svg"
+                            onClick= {()=>{
+                                this.props.onIncreaseQuantity(this.props.product)
+                                }} 
+                            />
                         <img
                             alt="decrease-button"
                             className="action-icons"
                             src="https://image.flaticon.com/icons/svg/992/992683.svg"
-                            onClick = {this.decreaseQunatity} />
+                            onClick={()=>{
+                                this.props.onDecreaseQuantity(this.props.product)
+                            } 
+                            }/>
                         <img
                             alt="delete-button"
                             className="action-icons"
