@@ -27,12 +27,12 @@ const CartItem = (props) => {
     //         }
     //     })
     // }
-    const { title, price, qnty, cartImage} = props.product;
+    const { title, price, qnty, img } = props.product;
     const { product, onIncreaseQuantity, onDecreaseQuantity, onDeleteProduct } = props;
     return (
         <div className="cart-item">
             <div className="left-block">
-                <img style={Styles.image} src={cartImage} alt="cart-pic"/>
+                <img style={Styles.image} src={img} alt="cart-pic"/>
             </div>
             <div className="right-block">
                 <div style={{ fontSize: 25 }}>{title}</div>
