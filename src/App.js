@@ -10,6 +10,7 @@ class App extends React.Component {
       products: [],
       loading: true
     };
+    this.db = firebase.firestore();
   }
  
   componentDidMount() {
@@ -26,8 +27,7 @@ class App extends React.Component {
     //     this.setState({ products: products, loading: false });
     //   });
 
-    firebase
-      .firestore()
+    this.db
       .collection("products")
       .onSnapshot(snapshot => {
         const products = snapshot.docs.map(doc => {
@@ -43,10 +43,20 @@ class App extends React.Component {
     console.log("increase Quantity of", product);
     const { products } = this.state;
     const index = products.indexOf(product);
-    products[index].qnty += 1;
-    this.setState({
-      // shorthand for products:products
-      products
+    // products[index].qnty += 1;
+    // this.setState({
+    //   // shorthand for products:products
+    //   products
+    // });
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef.update({
+      qnty: products[index].qnty += 1
+    })
+    .then(() => {
+      console.log("updated successfully");
+    })
+    .catch(error => {
+      console.log("error in updating product", error);
     });
   }
 
@@ -57,10 +67,20 @@ class App extends React.Component {
     if (products[index].qnty === 1) {
       return;
     }
-    products[index].qnty -= 1;
-    this.setState({
-      // shorthand for products:products
-      products
+    // products[index].qnty -= 1;
+    // this.setState({
+    //   // shorthand for products:products
+    //   products
+    // });
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef.update({
+      qnty: products[index].qnty -= 1
+    })
+    .then(() => {
+      console.log("updated successfully");
+    })
+    .catch(error => {
+      console.log("error in updating product", error);
     });
   }
 
@@ -90,11 +110,29 @@ class App extends React.Component {
     return total;
   }
 
+  addProduct = () =>{
+    this.db
+    .collection('products')
+    .add({
+      img:"",
+      title: "Washing Machine",
+      price: 8000,
+      qnty: 2
+    })
+    .then(docRef =>{
+      console.log("product added", docRef);
+    })
+    .catch(error =>{
+      console.log("error in addding  products", error);
+    });
+  }
+
   render() {
     const { products,loading } = this.state;
     return (
       <div className="App">
         <NavBar counts={this.getCartCount} />
+        <button style={{ padding:20, margin:20 }} onClick={this.addProduct}>Add Product</button>
         <Cart
           product={products}
           onIncreaseQuantity={this.handleIncreaseQuantity}
